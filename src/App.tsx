@@ -7,6 +7,7 @@ import { ContactDetail } from './pages/ContactDetail';
 import { Login } from './pages/Login';
 import { useContacts } from './hooks/useContacts';
 import { useAuth } from './hooks/useAuth';
+import { useNotifications } from './hooks/useNotifications';
 import type { ContactFormData } from './types/contact';
 import './index.css';
 
@@ -31,6 +32,7 @@ export default function App() {
   }
 
   const upcomingBirthdays = getUpcomingBirthdays(30);
+  const { permission, requestPermission, alerts } = useNotifications(upcomingBirthdays, user.id);
 
   function navigate(p: Page, id?: string) {
     setPage(p);
@@ -114,6 +116,9 @@ export default function App() {
       user={user}
       onSignOut={signOut}
       loading={contactsLoading}
+      notificationAlerts={alerts}
+      notificationPermission={permission}
+      onRequestNotificationPermission={requestPermission}
     >
       {renderPage()}
     </Layout>

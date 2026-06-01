@@ -7,9 +7,7 @@ export function Login({ onGoogleSignIn }: LoginProps) {
     <div className="min-h-dvh bg-[#f5f3ff] flex flex-col items-center justify-center px-6">
       {/* Logo */}
       <div className="flex flex-col items-center mb-12">
-        <div className="w-16 h-16 rounded-2xl bg-violet-600 flex items-center justify-center shadow-lg mb-4">
-          <span className="text-white text-2xl font-bold">LU</span>
-        </div>
+        <img src="/icon.svg" alt="LinkUP" className="w-20 h-20 rounded-2xl shadow-lg mb-4" />
         <h1 className="text-3xl font-bold text-violet-900 tracking-tight">LinkUP</h1>
         <p className="text-gray-400 text-sm mt-1 text-center">
           Réengagez votre réseau professionnel
