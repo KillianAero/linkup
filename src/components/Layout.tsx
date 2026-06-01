@@ -30,7 +30,7 @@ export function Layout({ children, currentPage, onNavigate, user, onSignOut, loa
   const [bellOpen, setBellOpen] = useState(false);
 
   const hasAlerts = notificationAlerts.length > 0;
-  const showNotifSupported = 'Notification' in window;
+  const notifSupported = 'Notification' in window;
 
   return (
     <div className="flex flex-col min-h-dvh bg-[#f5f3ff]">
@@ -42,8 +42,7 @@ export function Layout({ children, currentPage, onNavigate, user, onSignOut, loa
         </div>
         <div className="flex items-center gap-2">
           {/* Notification bell */}
-          {showNotifSupported && (
-            <div className="relative">
+          <div className="relative">
               <button
                 onClick={() => setBellOpen(o => !o)}
                 className="relative w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-violet-600 hover:bg-violet-50 transition-colors"
@@ -65,7 +64,10 @@ export function Layout({ children, currentPage, onNavigate, user, onSignOut, loa
                   <div className="absolute right-0 top-10 z-40 w-72 bg-white rounded-2xl shadow-xl border border-violet-100 overflow-hidden">
                     <div className="px-4 py-3 border-b border-violet-50 flex items-center justify-between">
                       <span className="font-semibold text-sm text-violet-900">Anniversaires</span>
-                      {notificationPermission === 'default' && (
+                      {!notifSupported && (
+                        <span className="text-xs text-gray-400">Non supporté</span>
+                      )}
+                      {notifSupported && notificationPermission === 'default' && (
                         <button
                           onClick={() => { onRequestNotificationPermission?.(); setBellOpen(false); }}
                           className="text-xs bg-violet-600 text-white px-2.5 py-1 rounded-lg font-medium hover:bg-violet-700 transition-colors"
@@ -73,10 +75,10 @@ export function Layout({ children, currentPage, onNavigate, user, onSignOut, loa
                           Activer
                         </button>
                       )}
-                      {notificationPermission === 'denied' && (
+                      {notifSupported && notificationPermission === 'denied' && (
                         <span className="text-xs text-gray-400">Notifications bloquées</span>
                       )}
-                      {notificationPermission === 'granted' && (
+                      {notifSupported && notificationPermission === 'granted' && (
                         <span className="text-xs text-green-500 font-medium">Activées ✓</span>
                       )}
                     </div>
@@ -106,7 +108,6 @@ export function Layout({ children, currentPage, onNavigate, user, onSignOut, loa
                 </>
               )}
             </div>
-          )}
 
           {avatarUrl ? (
             <img src={avatarUrl} alt={name} className="w-8 h-8 rounded-full object-cover" />
