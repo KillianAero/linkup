@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { ContactList } from './pages/ContactList';
@@ -18,6 +18,8 @@ export default function App() {
   const { contacts, loading: contactsLoading, addContact, updateContact, deleteContact, getContact, getUpcomingBirthdays } = useContacts(user?.id ?? null);
   const [page, setPage] = useState<Page>('dashboard');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const upcomingBirthdays = useMemo(() => getUpcomingBirthdays(30), [getUpcomingBirthdays]);
+  const { permission, requestPermission, alerts } = useNotifications(upcomingBirthdays, user?.id ?? null);
 
   if (authLoading) {
     return (
@@ -30,9 +32,6 @@ export default function App() {
   if (!user) {
     return <Login onGoogleSignIn={signInWithGoogle} />;
   }
-
-  const upcomingBirthdays = getUpcomingBirthdays(30);
-  const { permission, requestPermission, alerts } = useNotifications(upcomingBirthdays, user.id);
 
   function navigate(p: Page, id?: string) {
     setPage(p);
